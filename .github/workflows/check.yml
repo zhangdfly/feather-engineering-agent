@@ -1,0 +1,18 @@
+name: check
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check generated files
+        shell: pwsh
+        run: ./scripts/generate.ps1 -Check
+      - name: Run repository checks
+        shell: pwsh
+        run: ./scripts/test.ps1
+

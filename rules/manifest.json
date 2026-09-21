@@ -1,0 +1,38 @@
+{
+  "version": "0.1.0",
+  "skill": {
+    "name": "feather-engineering-agent",
+    "target": "skills/feather-engineering-agent/SKILL.md",
+    "description": "用于编写、修改或评审代码、workflow 与技术文档。以可读性为首要目标，保持业务流程可见、命名与领域所有权一致，并删除降低可读性的无关说明和无载荷抽象。"
+  },
+  "modules": [
+    {
+      "path": "rules/00-core.md",
+      "skill": "inline"
+    },
+    {
+      "path": "rules/10-technical-docs.md",
+      "skill": "reference",
+      "reference": "technical-docs.md",
+      "summary": "编写、改写或评审技术文档、README、FAQ、API 与配置说明时读取。"
+    },
+    {
+      "path": "rules/20-code-structure.md",
+      "skill": "reference",
+      "reference": "code-structure.md",
+      "summary": "编写、重构或评审 workflow、命名、类型与依赖结构时读取。"
+    },
+    {
+      "path": "rules/30-examples.md",
+      "skill": "reference",
+      "reference": "examples.md",
+      "summary": "规则含义不清、需要对照或执行审查时读取。"
+    }
+  ],
+  "bundleTargets": [
+    "AGENTS.md",
+    "adapters/claude-code/CLAUDE.md",
+    "adapters/github-copilot/.github/copilot-instructions.md",
+    "adapters/codex/AGENTS.md"
+  ]
+}
