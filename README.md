@@ -8,6 +8,8 @@
 
 一套面向 AI 编码 Agent 的可读性规则：让业务流程、状态所有权和技术结论直接出现在读者需要的位置。
 
+它有两种工作模式：编写代码或文档，以及评审 PR 并根据用户反馈持续修正规则。
+
 ## 解决的问题
 
 - 技术文档堆砌正确但无关的背景、排除项、免责声明和总结；
@@ -21,6 +23,18 @@
 
 每个句子、函数、类型和抽象层都必须增加信息、能力、不变量、业务顺序或边界，否则删除、内联或合并。
 
+## 工作模式
+
+### 编写模式
+
+Agent 加载对应的代码或文档规则，直接用于实现、修改和重构。
+
+### PR Review 模式
+
+把 PR 链接交给 Agent 后，它读取 diff、已有评论和对应规则，按要求草拟或发布具体的 Review comments。
+
+评审结束后，明确要求 Agent 总结本次反馈。Agent 会把可泛化的反馈更新到已有规则，并在 `evals/` 中加入能复现该问题的回归案例。规则修改和案例必须在同一个变更中。
+
 ## 仓库结构
 
 ```text
@@ -30,19 +44,22 @@ skills/feather-engineering-agent/
     ├── docs/
     │   ├── rules.md
     │   └── examples.md
-    └── code/
-        ├── rules.md
-        └── examples.md
+    ├── code/
+    │   ├── rules.md
+    │   └── examples.md
+    └── review.md                   PR Review 与反馈学习流程
 AGENTS.md                           本仓库的 Skill 路由与项目规则
 .github/plugin/                     GitHub Copilot CLI 插件清单
 .claude-plugin/                     Claude Code 插件清单
 .codex-plugin/                      Codex 插件清单
-evals/docs/                         技术文档行为评测
-evals/code/                         代码结构行为评测
+evals/docs/                         技术文档回归案例
+evals/code/                         代码结构回归案例
 docs/                               架构、接入、扩展和 Hook 决策
 ```
 
 行为规则只存在于 `skills/feather-engineering-agent/`。插件 manifest 只声明元数据和 Skill 路径，不复制规则正文。
+
+`evals/` 不是运行时规则。它记录规则来自什么失败模式，用于防止后续修改让相同行为再次出现。
 
 ## 使用方式
 

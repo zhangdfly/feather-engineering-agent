@@ -37,6 +37,8 @@ npx skills add <owner>/feather-engineering-agent
 
 如果宿主不支持 Agent Skills，可以在项目 `AGENTS.md` 中直接引用本仓库的规则，或复制当前版本的 Skill 目录。不要同时维护多份规则副本。
 
+PR Review 模式要求宿主能够读取 PR、diff 和 Review comments。Skill 只定义评审与学习行为，不提供 GitHub 凭据或额外权限。
+
 ## 未发布远程仓库时
 
 本地评审阶段不需要安装插件。可让 Agent 直接读取 `skills/feather-engineering-agent/SKILL.md`。

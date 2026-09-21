@@ -1,7 +1,7 @@
 ---
 name: feather-engineering-agent
 description: >
-  用于编写、修改或评审代码、workflow 与技术文档。以可读性为首要目标，保持业务流程可见、命名与领域所有权一致，并删除降低可读性的无关说明和无载荷抽象。
+  用于编写代码与技术文档，或根据 GitHub PR 链接进行评审并生成评论。评审结束后，根据用户反馈更新规则并添加回归案例。
 license: MIT
 metadata:
   version: "0.1.0"
@@ -48,11 +48,22 @@ metadata:
 
 交付核心结果和必要边界后停止。不要追加未请求的背景、辩护、总结或未来规划。
 
-## 任务路由
+## 工作模式
 
-- 编写、改写或评审技术文档时，读取 [references/docs/rules.md](references/docs/rules.md)。
-- 编写、修改或评审代码结构时，读取 [references/code/rules.md](references/code/rules.md)。
-- 只有需要判断边界、解释规则或执行专项评审时，才读取对应领域的 `examples.md`。
+### 编写模式
+
+- 编写或修改技术文档时，读取 [references/docs/rules.md](references/docs/rules.md)。
+- 编写或修改代码时，读取 [references/code/rules.md](references/code/rules.md)。
+- 只有需要判断边界或解释规则时，才读取对应领域的 `examples.md`。
 - 同时涉及代码与文档时，读取两组规则。
+
+### PR Review 模式
+
+用户提供 PR 链接或要求评审 PR 时：
+
+1. 读取 [references/review.md](references/review.md)；
+2. 根据变更内容读取代码规则、文档规则或两者；
+3. 按用户要求草拟或发布具体、可执行的 Review comments；
+4. 用户明确表示评审结束后，根据完整讨论更新已有规则，并在 `evals/` 添加对应回归案例。
 
 不要为了展示完整性加载无关领域的规则或示例。

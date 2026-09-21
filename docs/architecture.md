@@ -13,12 +13,13 @@ skills/feather-engineering-agent/
     ├── docs/
     │   ├── rules.md
     │   └── examples.md
-    └── code/
-        ├── rules.md
-        └── examples.md
+    ├── code/
+    │   ├── rules.md
+    │   └── examples.md
+    └── review.md
 ```
 
-`SKILL.md` 包含所有任务都需要的核心规则和任务路由。领域规则与示例按需读取。
+`SKILL.md` 包含所有任务都需要的核心规则，并在编写模式与 PR Review 模式之间路由。领域规则与示例按需读取，`review.md` 只定义评审和反馈学习流程。
 
 ## 依赖方向
 
@@ -28,16 +29,23 @@ plugin manifest
       v
 SKILL.md
       |
-      +--> references/docs/rules.md
-      |          └--> references/docs/examples.md
+      +--> 编写模式
+      |      +--> references/docs/rules.md
+      |      └--> references/code/rules.md
       |
-      └--> references/code/rules.md
-                 └--> references/code/examples.md
+      └--> PR Review 模式
+             +--> references/review.md
+             +--> 对应领域规则
+             └--> 用户反馈
+                    +--> 更新现有规则
+                    └--> 添加 eval case
 ```
 
 规则文件不能引用宿主 manifest。示例只能解释已有规则，不能创建新规则。
 
 根目录 `AGENTS.md` 只负责让维护本仓库的 Agent 加载本地 Skill，并承载未来的项目特有规则。
+
+`evals/` 不参与正常编写和评审。它保存评审反馈形成的最小回归案例，为后续规则修改提供可复现证据。
 
 ## 来源取舍
 

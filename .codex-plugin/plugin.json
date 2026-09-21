@@ -1,7 +1,7 @@
 {
   "name": "feather-engineering-agent",
   "version": "0.1.0",
-  "description": "Readable code, direct technical documentation, and honest structure.",
+  "description": "Readable code, direct documentation, actionable PR reviews, and feedback-driven rules.",
   "author": {
     "name": "Feather Engineering Agent contributors"
   },

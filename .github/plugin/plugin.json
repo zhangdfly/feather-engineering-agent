@@ -1,6 +1,6 @@
 {
   "name": "feather-engineering-agent",
-  "description": "Make code and technical documentation easier to read through visible workflows, honest names, and direct prose.",
+  "description": "Write readable code and documentation, review pull requests, and learn rules from review feedback.",
   "version": "0.1.0",
   "author": {
     "name": "Feather Engineering Agent contributors"
@@ -9,14 +9,15 @@
   "keywords": [
     "agent-skills",
     "code-quality",
+    "code-review",
     "documentation",
     "readability"
   ],
   "skills": "skills/",
   "interface": {
     "displayName": "Feather Engineering Agent",
-    "shortDescription": "Readable code and direct technical docs",
-    "longDescription": "Improve readability through visible workflows, honest domain naming, direct documentation, and abstractions that carry real meaning.",
+    "shortDescription": "Readable code, direct docs, actionable PR reviews",
+    "longDescription": "Write readable code and documentation, produce actionable pull request comments, and turn review feedback into rules and regression cases.",
     "developerName": "Feather Engineering Agent contributors",
     "category": "Productivity",
     "capabilities": [
@@ -25,7 +26,8 @@
     "defaultPrompt": [
       "Apply Feather readability rules to this task.",
       "Rewrite this document for direct, relevant reading.",
-      "Review this workflow for hidden steps and unnecessary abstractions."
+      "Review this pull request and write concrete inline comments.",
+      "Use my completed review feedback to update Feather rules and regression cases."
     ],
     "brandColor": "#111111",
     "composerIcon": "./assets/feather.svg",

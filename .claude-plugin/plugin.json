@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "feather-engineering-agent",
-  "description": "Readable code, direct technical documentation, and honest structure.",
+  "description": "Readable code, direct documentation, actionable PR reviews, and feedback-driven rules.",
   "version": "0.1.0",
   "author": {
     "name": "Feather Engineering Agent contributors"

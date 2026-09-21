@@ -4,11 +4,22 @@
 
 ## 修改流程
 
-1. 在 `evals/docs/` 或 `evals/code/` 添加能稳定复现问题的输入和期望行为。
-2. 文档规则修改 `skills/feather-engineering-agent/references/docs/`。
-3. 代码规则修改 `skills/feather-engineering-agent/references/code/`。
-4. 只有所有任务都必须遵守的短规则才进入 `SKILL.md`。
-5. 检查插件 manifest 指向 `skills/`，并确认文档链接有效。
+1. 确认问题来自可复现的任务结果或已结束的 PR Review。
+2. 在 `evals/docs/` 或 `evals/code/` 添加能复现问题的最小案例。
+3. 文档规则修改 `skills/feather-engineering-agent/references/docs/`。
+4. 代码规则修改 `skills/feather-engineering-agent/references/code/`。
+5. 只有所有任务都必须遵守的短规则才进入 `SKILL.md`。
+6. 规则修改和案例放在同一个变更中。
+7. 检查插件 manifest 指向 `skills/`，并确认文档链接有效。
+
+## 从 PR Review 学习
+
+评审结束后，读取最终 diff、Agent 评论、用户评论、回复和处理结果：
+
+- 用户指出而 Agent 漏掉的问题，应形成能够检测该问题的规则与案例；
+- 用户纠正或否定的 Agent 评论，应收窄规则边界并添加防止误报的案例；
+- 用户明确要求成为通用规则的反馈，不要求重复出现；
+- 项目特有约束、一次性取舍和纯个人措辞，不进入通用规则。
 
 ## 新规则准入
 
