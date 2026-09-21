@@ -4,5 +4,6 @@
   "description": "Readable code, direct technical documentation, and honest structure.",
   "author": {
     "name": "Feather Engineering Agent contributors"
-  }
+  },
+  "skills": "./skills/"
 }

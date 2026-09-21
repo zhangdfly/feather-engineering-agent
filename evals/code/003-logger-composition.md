@@ -14,4 +14,3 @@
 - 新增只有一个实现的 `LoggingExecutor` 接口；
 - decorator 只执行 `log -> inner.method -> log`，且没有复用或独立策略需求；
 - 出现多层纯转发类型。
-

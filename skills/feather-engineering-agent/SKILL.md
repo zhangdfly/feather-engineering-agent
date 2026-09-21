@@ -7,8 +7,6 @@ metadata:
   version: "0.1.0"
 ---
 
-<!-- 此文件由 scripts/generate.ps1 从 rules/ 生成，请勿直接编辑。 -->
-
 # Feather Engineering Agent
 
 ## 可读性优先
@@ -50,10 +48,11 @@ metadata:
 
 交付核心结果和必要边界后停止。不要追加未请求的背景、辩护、总结或未来规划。
 
-## 按需读取
+## 任务路由
 
-- [references/technical-docs.md](references/technical-docs.md)：编写、改写或评审技术文档、README、FAQ、API 与配置说明时读取。
-- [references/code-structure.md](references/code-structure.md)：编写、重构或评审 workflow、命名、类型与依赖结构时读取。
-- [references/examples.md](references/examples.md)：规则含义不清、需要对照或执行审查时读取。
+- 编写、改写或评审技术文档时，读取 [references/docs/rules.md](references/docs/rules.md)。
+- 编写、修改或评审代码结构时，读取 [references/code/rules.md](references/code/rules.md)。
+- 只有需要判断边界、解释规则或执行专项评审时，才读取对应领域的 `examples.md`。
+- 同时涉及代码与文档时，读取两组规则。
 
-任务同时涉及文档与代码时，读取两份对应规则。只有需要判断边界或评审结果时才读取 examples。
+不要为了展示完整性加载无关领域的规则或示例。

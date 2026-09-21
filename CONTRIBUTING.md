@@ -4,15 +4,11 @@
 
 ## 修改流程
 
-1. 在 `evals/cases/` 添加能稳定复现问题的输入和期望行为。
-2. 修改 `rules/` 中拥有该职责的现有模块；只有职责确实独立时才新增模块。
-3. 如新增模块，在 `rules/manifest.json` 中声明顺序和 Skill 加载方式。
-4. 运行生成和检查：
-
-```powershell
-pwsh -File .\scripts\generate.ps1
-pwsh -File .\scripts\test.ps1
-```
+1. 在 `evals/docs/` 或 `evals/code/` 添加能稳定复现问题的输入和期望行为。
+2. 文档规则修改 `skills/feather-engineering-agent/references/docs/`。
+3. 代码规则修改 `skills/feather-engineering-agent/references/code/`。
+4. 只有所有任务都必须遵守的短规则才进入 `SKILL.md`。
+5. 检查插件 manifest 指向 `skills/`，并确认文档链接有效。
 
 ## 新规则准入
 
@@ -26,13 +22,4 @@ pwsh -File .\scripts\test.ps1
 
 仅表达个人审美、无法观察效果或只改换说法的规则不应加入。
 
-## 生成文件
-
-不要直接编辑以下文件：
-
-- `AGENTS.md`
-- `adapters/**/*.md`
-- `skills/feather-engineering-agent/SKILL.md`
-- `skills/feather-engineering-agent/references/*.md`
-
-它们由 `scripts/generate.ps1` 从 `rules/` 生成。
+正反例必须放在对应领域的 `examples.md`，不得把文档示例与代码示例混在同一文件中。

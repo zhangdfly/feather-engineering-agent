@@ -2,54 +2,42 @@
 
 ## 结论
 
-规则只有一个来源：`rules/`。所有宿主指令和 Agent Skill 文件均由生成器派生，禁止手工维护多份规则正文。
+行为规则只有一个来源：`skills/feather-engineering-agent/`。插件 manifest 只指向该 Skill，不复制规则正文，也不经过生成步骤。
 
-## 数据流
+## 文件结构
 
 ```text
-rules/manifest.json
-        |
-        v
-rules/*.md + 可选扩展模块
-        |
-        v
-scripts/generate.ps1
-        |
-        +--> AGENTS.md
-        +--> adapters/claude-code/CLAUDE.md
-        +--> adapters/github-copilot/.github/copilot-instructions.md
-        +--> adapters/codex/AGENTS.md
-        +--> skills/feather-engineering-agent/SKILL.md
-        +--> skills/feather-engineering-agent/references/*.md
+skills/feather-engineering-agent/
+├── SKILL.md
+└── references/
+    ├── docs/
+    │   ├── rules.md
+    │   └── examples.md
+    └── code/
+        ├── rules.md
+        └── examples.md
 ```
 
-依赖只能从规则源流向生成产物。生成文件不能反向定义规则。
+`SKILL.md` 包含所有任务都需要的核心规则和任务路由。领域规则与示例按需读取。
 
-## 模块职责
+## 依赖方向
 
-| 文件 | 职责 |
-|---|---|
-| `rules/00-core.md` | 所有任务始终生效的可读性原则和不可裁剪边界 |
-| `rules/10-technical-docs.md` | 技术文档的信息准入、顺序和反模式 |
-| `rules/20-code-structure.md` | workflow、函数抽取、命名、组合和类型结构 |
-| `rules/30-examples.md` | 正反例，不新增规则 |
-| `rules/manifest.json` | 模块顺序、Skill 内联/引用方式和生成目标 |
+```text
+plugin manifest
+      |
+      v
+SKILL.md
+      |
+      +--> references/docs/rules.md
+      |          └--> references/docs/examples.md
+      |
+      └--> references/code/rules.md
+                 └--> references/code/examples.md
+```
 
-`SKILL.md` 只内联核心原则；文档、代码和示例规则放在本 Skill 的 `references/` 中按需读取。`AGENTS.md` 和 `adapters/` 中的宿主文件展平全部模块，避免宿主忽略相对引用。
+规则文件不能引用宿主 manifest。示例只能解释已有规则，不能创建新规则。
 
-根目录只保留 `AGENTS.md`。其他宿主格式位于 `adapters/`，供用户复制到目标项目；这样本仓库不会被同一 Agent 重复加载多份相同规则。
-
-## 生成器
-
-`scripts/generate.ps1` 只有一条可见流程：
-
-1. 读取核心和扩展清单；
-2. 校验并读取模块；
-3. 组合完整规则和 Skill 路由；
-4. 渲染目标文件；
-5. 写入或检查漂移。
-
-生成器没有 adapter 基类、宿主继承树或模板引擎。三个宿主的规则内容相同，差异只留在各自的 plugin manifest。
+根目录 `AGENTS.md` 只负责让维护本仓库的 Agent 加载本地 Skill，并承载未来的项目特有规则。
 
 ## 来源取舍
 
