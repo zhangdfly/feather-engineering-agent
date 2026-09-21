@@ -33,3 +33,55 @@ client:
 ```
 
 如果系统存在会改变该配置含义的真实版本限制，再补充该限制；不要预先罗列未知边界。
+
+### 架构文档中的图表
+
+任务：说明插件仓库的文件结构、组件依赖，以及 Agent 加载规则的核心顺序。
+
+错误：
+
+```text
+Plugin manifest
+  -> SKILL.md
+    -> 文档规则
+```
+
+再用一段文字描述 Agent、Skill 和规则文件之间的调用顺序。读者需要从字符缩进和文字中自行还原关系。
+
+正确：
+
+文件层级保留文本树：
+
+```text
+skills/
+└── engineering-agent/
+    ├── SKILL.md
+    └── references/
+        └── docs/
+            └── rules.md
+```
+
+组件依赖使用 Mermaid 组件图：
+
+```mermaid
+flowchart TD
+    manifest["Plugin manifest"] --> skill["SKILL.md"]
+    skill --> docsRules["文档规则"]
+```
+
+多参与者的核心调用顺序使用 Mermaid 时序图：
+
+```mermaid
+sequenceDiagram
+    participant User as 用户
+    participant Agent
+    participant Skill as SKILL.md
+    participant Rules as 文档规则
+
+    User->>Agent: 提交文档任务
+    Agent->>Skill: 加载入口规则
+    Skill-->>Agent: 路由到文档规则
+    Agent->>Rules: 加载文档规则
+    Rules-->>Agent: 返回写作约束
+    Agent-->>User: 交付文档
+```

@@ -23,22 +23,34 @@ skills/feather-engineering-agent/
 
 ## 依赖方向
 
-```text
-plugin manifest
-      |
-      v
-SKILL.md
-      |
-      +--> 编写模式
-      |      +--> references/docs/rules.md
-      |      └--> references/code/rules.md
-      |
-      └--> PR Review 模式
-             +--> references/review.md
-             +--> 对应领域规则
-             └--> 用户反馈
-                    +--> 更新现有规则
-                    └--> 添加 eval case
+```mermaid
+flowchart TD
+    manifest["Plugin manifest"] --> skill["SKILL.md"]
+
+    subgraph authoring["编写模式"]
+        authoringTask["编写任务"]
+        docsRules["references/docs/rules.md"]
+        codeRules["references/code/rules.md"]
+        authoringTask --> docsRules
+        authoringTask --> codeRules
+    end
+
+    subgraph review["PR Review 模式"]
+        reviewTask["评审任务"]
+        reviewRules["references/review.md"]
+        domainRules["对应领域规则"]
+        feedback["用户反馈"]
+        updateRules["更新现有规则"]
+        evalCase["添加 eval case"]
+        reviewTask --> reviewRules
+        reviewTask --> domainRules
+        reviewTask --> feedback
+        feedback --> updateRules
+        feedback --> evalCase
+    end
+
+    skill --> authoringTask
+    skill --> reviewTask
 ```
 
 规则文件不能引用宿主 manifest。示例只能解释已有规则，不能创建新规则。
