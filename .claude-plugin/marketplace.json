@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "feather-engineering-agent",
+  "description": "Readable code, direct technical documentation, and honest structure.",
+  "owner": {
+    "name": "Feather Engineering Agent contributors"
+  },
+  "plugins": [
+    {
+      "name": "feather-engineering-agent",
+      "description": "Improve readability without hiding workflow or correctness boundaries.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "feather-engineering-agent",
+  "description": "Write readable code and documentation, review pull requests, and learn rules from review feedback.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Feather Engineering Agent contributors"
+  },
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "code-quality",
+    "code-review",
+    "documentation",
+    "readability"
+  ],
+  "skills": "skills/",
+  "interface": {
+    "displayName": "Feather Engineering Agent",
+    "shortDescription": "Readable code, direct docs, actionable PR reviews",
+    "longDescription": "Write readable code and documentation, produce actionable pull request comments, and turn review feedback into rules and regression cases.",
+    "developerName": "Feather Engineering Agent contributors",
+    "category": "Productivity",
+    "capabilities": [
+      "Instructions"
+    ],
+    "defaultPrompt": [
+      "Apply Feather readability rules to this task.",
+      "Rewrite this document for direct, relevant reading.",
+      "Review this pull request and write concrete inline comments.",
+      "Use my completed review feedback to update Feather rules and regression cases."
+    ],
+    "brandColor": "#111111",
+    "composerIcon": "./assets/feather.svg",
+    "logo": "./assets/feather.svg"
+  }
+}
