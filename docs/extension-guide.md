@@ -4,18 +4,7 @@
 
 ## 项目规则
 
-把只适用于单个项目的约束写入该项目的 `AGENTS.md`：
-
-```markdown
-# Project instructions
-
-Use the installed Feather Engineering Agent skill.
-
-## Project-specific rules
-
-- 数据库迁移必须与应用代码放在同一个变更中。
-- 修改公开 API 时，只记录真实行为变化。
-```
+把只适用于单个项目的约束写入该项目的 `AGENTS.md`。
 
 ## 可复用扩展
 
