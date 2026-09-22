@@ -22,7 +22,7 @@ def run(self, job):
     job.validate()
 
     # 2. 打开性能窗口
-    window = self.perf_tracker.start_window(job.id)
+    measurement_window = self.perf_tracker.open_measurement_window(job.id)
 
     try:
         # 3. 执行任务
@@ -33,7 +33,7 @@ def run(self, job):
         return result
     finally:
         # 5. 关闭性能窗口
-        window.stop()
+        measurement_window.close()
 ```
 
 ### 名称与所有权
@@ -47,8 +47,49 @@ executor.start()  # 内部实际记录性能窗口起始时间
 正确：
 
 ```python
-window = perf_tracker.start_window(job.id)
+measurement_window = perf_tracker.open_measurement_window(job.id)
 ```
+
+如果 `Executor` 本身启动工作循环，`executor.start()` 是准确名称：
+
+```python
+executor.start()
+measurement_window = perf_tracker.open_measurement_window(job.id)
+```
+
+前一个调用改变 `Executor` 的生命周期；后一个调用改变性能测量状态。不能因为都发生在执行流程中就把两者合并成同一个含糊的 `start()`。
+
+### 合理抽取复杂步骤
+
+正确：
+
+```python
+def run(self, request):
+    # 1. 校验请求
+    request.validate()
+
+    # 2. 编译执行计划
+    plan = self.plan_compiler.compile(request.expression)
+
+    # 3. 执行计划
+    return self.executor.execute(plan)
+```
+
+`compile()` 封装具有独立语法、不变量和错误语义的算法。调用名仍让主流程保持可见，因此不应为了扁平化把编译器实现内联到 `run()`。
+
+### 多个公开 adapter
+
+正确：
+
+```python
+def run_cli(self, args):
+    return self.run(parse_cli_request(args))
+
+def run_http(self, payload):
+    return self.run(parse_http_request(payload))
+```
+
+不同入口只负责输入适配，业务步骤仍由同一个 `run()` 权威表达。
 
 ### 添加日志能力
 
@@ -70,4 +111,3 @@ class Executor:
 ```
 
 `Executor` 在执行真实业务动作的位置记录日志。只有日志策略需要透明应用到多个无关实现时，才考虑独立包装层。
-

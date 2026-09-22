@@ -4,7 +4,7 @@ description: >
   用于编写代码与技术文档，或根据 GitHub PR 链接进行评审并生成评论。评审结束后，根据用户反馈更新规则并添加回归案例。
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Feather Engineering Agent
@@ -64,6 +64,6 @@ metadata:
 1. 读取 [references/review.md](references/review.md)；
 2. 根据变更内容读取代码规则、文档规则或两者；
 3. 按用户要求草拟或发布具体、可执行的 Review comments；
-4. 用户明确表示评审结束后，根据完整讨论更新已有规则，并在 `evals/` 添加对应回归案例。
+4. 用户明确表示评审结束后，按 `references/review.md` 的源码仓库边界处理反馈：在 Feather 源码仓库中更新规则和 `evals/`，否则只生成候选 patch。
 
 不要为了展示完整性加载无关领域的规则或示例。
