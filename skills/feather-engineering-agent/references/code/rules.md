@@ -37,7 +37,7 @@ receiver owns the state + verb names the transition + noun identifies the affect
 
 方法应挂在真正拥有该状态或行为的对象上。裸 `start()` 只表示接收者自身开始生命周期；如果改变的是下属状态，方法名必须指出该状态。开始性能测量窗口应写成 `perfTracker.openMeasurementWindow()` 或 `measurementWindow.begin()`，不能用 `executor.start()` 隐藏真实行为。若 `Executor` 本身确实启动，则 `executor.start()` 是准确名称。
 
-同一生命周期使用语义对称的动词对，例如 `open/close`、`begin/complete` 或 `start/stop`。类型、变量、方法、日志和测试使用同一领域术语。
+同一生命周期使用语义对称的动词对，例如 `open/close`、`begin/complete` 或 `start/stop`。类型、变量、方法、日志和测试使用同一领域术语。变量名应保留区分该状态所需的领域限定词；`openMeasurementWindow()` 的返回值应命名为 `measurementWindow`，不能缩写成丢失语义的 `window`。
 
 避免使用 `Manager`、`Handler`、`Helper`、`Util` 等名称掩盖职责。
 

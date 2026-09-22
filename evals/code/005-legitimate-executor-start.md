@@ -10,7 +10,7 @@
 
 ## 合格结果
 
-保留 `executor.start()` 表示 Executor 自身启动，并使用 `perfTracker.openMeasurementWindow()` 与 `window.close()` 表示性能窗口生命周期。两个动作在名称和所有权上保持独立。
+保留 `executor.start()` 表示 Executor 自身启动，并使用 `perfTracker.openMeasurementWindow()` 与 `measurementWindow.close()` 表示性能窗口生命周期。两个动作在名称和所有权上保持独立。
 
 ## 失败特征
 

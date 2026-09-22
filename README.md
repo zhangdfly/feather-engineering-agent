@@ -33,7 +33,7 @@ def run(self, job):
     job.validate()
 
     # 2. 打开性能测量窗口
-    window = self.perf_tracker.open_measurement_window(job.id)
+    measurement_window = self.perf_tracker.open_measurement_window(job.id)
 
     try:
         # 3. 执行任务
@@ -44,7 +44,7 @@ def run(self, job):
         return result
     finally:
         # 5. 关闭性能测量窗口
-        window.close()
+        measurement_window.close()
 ```
 
 复杂算法、资源生命周期和副作用边界仍可抽取，但调用名必须保留业务含义。

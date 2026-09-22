@@ -22,7 +22,7 @@ def run(self, job):
     job.validate()
 
     # 2. 打开性能窗口
-    window = self.perf_tracker.open_measurement_window(job.id)
+    measurement_window = self.perf_tracker.open_measurement_window(job.id)
 
     try:
         # 3. 执行任务
@@ -33,7 +33,7 @@ def run(self, job):
         return result
     finally:
         # 5. 关闭性能窗口
-        window.close()
+        measurement_window.close()
 ```
 
 ### 名称与所有权
@@ -47,14 +47,14 @@ executor.start()  # 内部实际记录性能窗口起始时间
 正确：
 
 ```python
-window = perf_tracker.open_measurement_window(job.id)
+measurement_window = perf_tracker.open_measurement_window(job.id)
 ```
 
 如果 `Executor` 本身启动工作循环，`executor.start()` 是准确名称：
 
 ```python
 executor.start()
-window = perf_tracker.open_measurement_window(job.id)
+measurement_window = perf_tracker.open_measurement_window(job.id)
 ```
 
 前一个调用改变 `Executor` 的生命周期；后一个调用改变性能测量状态。不能因为都发生在执行流程中就把两者合并成同一个含糊的 `start()`。
