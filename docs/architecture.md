@@ -40,13 +40,17 @@ flowchart TD
         reviewRules["references/review.md"]
         domainRules["对应领域规则"]
         feedback["用户反馈"]
+        sourceCheck{"Feather 源码仓库？"}
         updateRules["更新现有规则"]
         evalCase["添加 eval case"]
+        changeProposal["生成候选 patch"]
         reviewTask --> reviewRules
         reviewTask --> domainRules
         reviewTask --> feedback
-        feedback --> updateRules
-        feedback --> evalCase
+        feedback --> sourceCheck
+        sourceCheck -->|是| updateRules
+        sourceCheck -->|否| changeProposal
+        updateRules --> evalCase
     end
 
     skill --> authoringTask
@@ -57,7 +61,7 @@ flowchart TD
 
 根目录 `AGENTS.md` 只负责让维护本仓库的 Agent 加载本地 Skill，并承载未来的项目特有规则。
 
-`evals/` 不参与正常编写和评审。它保存评审反馈形成的最小回归案例，为后续规则修改提供可复现证据。
+`evals/` 不参与正常编写和评审。它保存包含真实输入、期望结果、失败特征和误报边界的回归案例，为后续规则修改提供可复现证据。仓库测试只校验案例结构，不把静态检查冒充模型行为评测。
 
 ## 来源取舍
 

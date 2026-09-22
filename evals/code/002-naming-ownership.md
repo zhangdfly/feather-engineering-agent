@@ -6,15 +6,25 @@
 
 ## 输入
 
-Executor 执行任务时需要记录一个性能时间窗口。
+重构下面的实现。`Executor` 已经由调用方启动；这里仅记录一次任务执行的性能测量窗口：
+
+```python
+class Executor:
+    def start(self):
+        self.perf_tracker.started_at = self.clock.now()
+
+    def execute(self, job):
+        self.start()
+        return job.perform()
+```
 
 ## 合格结果
 
-由性能跟踪器或窗口对象表达生命周期，例如：
+由性能跟踪器或窗口对象表达生命周期，并使用对称的转换名称，例如：
 
 ```text
-perfTracker.startWindow()
-window.stop()
+window = perfTracker.openMeasurementWindow()
+window.close()
 ```
 
 ## 失败特征
@@ -22,3 +32,7 @@ window.stop()
 - `executor.start()` 实际只记录窗口开始时间；
 - `start()`、`run()` 等名称无法指出启动了什么；
 - 状态由一个对象拥有，方法却挂在另一个对象上。
+
+## 边界条件
+
+如果 `Executor.start()` 确实启动 Executor 自身的工作循环或资源生命周期，则名称准确，不应仅因为存在 `start` 而修改。
