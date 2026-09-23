@@ -111,3 +111,45 @@ class Executor:
 ```
 
 `Executor` 在执行真实业务动作的位置记录日志。只有日志策略需要透明应用到多个无关实现时，才考虑独立包装层。
+
+### 模块与注释
+
+错误：
+
+```yaml
+steps:
+  - uses: actions/checkout@<sha>
+  - run: npm ci
+  - run: npm test
+  - run: ./deploy.sh
+```
+
+读者只能看到工具调用，不知道为何需要完整历史、测试发生在何种权限之前，也不知道部署步骤拥有什么边界。
+
+正确：
+
+```yaml
+steps:
+  # 检出完整历史，用于证明待发布 commit 已进入主分支。
+  - uses: actions/checkout@<sha>
+
+  # 按 lockfile 安装校验器依赖。
+  - run: npm ci
+
+  # 在取得部署凭据前执行安全与结构回归测试。
+  - run: npm test
+
+  # 使用 Namespace 级身份发布已经审核的清单。
+  - run: ./deploy.sh
+```
+
+同一模块的 README 说明这些工作流文件各自的职责。复杂配置块解释权限、顺序和失败边界；标准文件名或不支持注释的格式由 README 说明。
+
+简单函数不需要注释：
+
+```python
+def sort_by_id(items):
+    return sorted(items, key=lambda item: item.id)
+```
+
+如果函数名只是 `process()`，应先改成领域名称，而不是添加“处理数据”注释。
