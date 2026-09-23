@@ -85,3 +85,40 @@ sequenceDiagram
     Rules-->>Agent: 返回写作约束
     Agent-->>User: 交付文档
 ```
+
+### 多模块设计的覆盖与阅读路径
+
+任务：一个项目有客户端、服务端和共享协议。读者要求从 README 逐层看懂模块与主要类型，以及外部事件如何到达服务端；目前整体设计只有组件图，本地设计只有文件列表。
+
+错误：
+
+> 总设计反复概括每个目录，本地设计只列出 `bridge.ts`、`app.ts` 和 `session.ts` 的文件名；图中有一条“外部事件 → 服务端”箭头，却没有说明事件从何处进入客户端、谁负责转发，以及连接失败时发生什么。
+
+正确：
+
+> README 链到整体设计；整体设计交代客户端、服务端与共享协议的关系，并链接到拥有流程的模块设计。客户端传输模块说明事件桥接收外部事件、交给页面编排，并写清断线重连和无效事件的处理；服务端会话模块说明收到控制消息后的状态变化。各模块链接主要类型和实现文件，不在整体设计中重复局部流程。
+
+只有少量文件且读者可以连续读完的项目，不必为每个目录创建独立文档；按真实机制的复杂度决定细节，不按代码行数分配篇幅。
+
+### 时序图中的参与者归属
+
+任务：事件由外部源进入客户端传输模块，经过页面编排到服务端会话；读者看不出原图中的 `Client`、`App` 和 `Session` 分别属于哪里。
+
+错误：只给参与者写抽象类名，再让读者到正文猜测它们属于哪个模块或外部系统。
+
+正确：
+
+```mermaid
+sequenceDiagram
+    participant SOURCE as 事件源（外部）
+    participant BRIDGE as 事件桥（client/transport）
+    participant APP as 页面编排（client/app）
+    participant CLIENT as 网关连接（client/transport）
+    participant SESSION as 会话（server/session）
+    SOURCE-->>BRIDGE: event
+    BRIDGE-->>APP: onEvent
+    APP->>CLIENT: send(control)
+    CLIENT->>SESSION: 控制消息（经 WebSocket）
+```
+
+若参与者在当前页面已经唯一且清楚，不必给每列重复写完整源码路径；失败和重连机制放在拥有它的模块设计中，不靠这张图猜。
