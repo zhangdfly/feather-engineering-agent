@@ -122,3 +122,46 @@ sequenceDiagram
 ```
 
 若参与者在当前页面已经唯一且清楚，不必给每列重复写完整源码路径；失败和重连机制放在拥有它的模块设计中，不靠这张图猜。
+
+### 用户要求图示全覆盖
+
+任务：实际模块为 `client/app`、`client/transport`、`server/session`、`shared/wire`。运行时文件及目标方法为 `app.ts:handleEvent`、`bridge.ts:connect/onEvent/disconnect`、`gateway.ts:send`、`session.ts:receive`、`event.ts:decodeEvent`；另有 `styles.css`、`types.ts`、`session.test.ts`。要求模块图覆盖所有模块，时序图覆盖所有运行时文件及公开或跨模块复用的方法。
+
+错误：只画 `app → session` 的主路径，漏掉 `shared/wire`、`gateway.ts` 和 `disconnect()`；为凑文件数量把样式或测试画成运行时参与者。
+
+正确：模块关系图列出四个模块，按启动/结束与事件交接拆成两张时序图；非运行时文件由模块图或文件职责索引说明。
+
+```mermaid
+flowchart LR
+    SOURCE["事件源（外部）"] --> TRANSPORT["client/transport"]
+    TRANSPORT --> WIRE["shared/wire"]
+    TRANSPORT --> APP["client/app"]
+    APP --> TRANSPORT
+    TRANSPORT --> SESSION["server/session"]
+```
+
+```mermaid
+sequenceDiagram
+    participant APP as app.ts（client/app）
+    participant BRIDGE as bridge.ts（client/transport）
+    APP->>BRIDGE: connect()
+    APP->>BRIDGE: disconnect()
+```
+
+```mermaid
+sequenceDiagram
+    participant SOURCE as 事件源（外部）
+    participant BRIDGE as bridge.ts（client/transport）
+    participant WIRE as event.ts（shared/wire）
+    participant APP as app.ts（client/app）
+    participant CLIENT as gateway.ts（client/transport）
+    participant SESSION as session.ts（server/session）
+    SOURCE-->>BRIDGE: onEvent(payload)
+    BRIDGE->>WIRE: decodeEvent(payload)
+    WIRE-->>BRIDGE: event
+    BRIDGE-->>APP: handleEvent(event)
+    APP->>CLIENT: send(event)
+    CLIENT->>SESSION: receive(event)（经 WebSocket）
+```
+
+覆盖索引：`bridge.ts` 对应启停和事件图；`app.ts`、`gateway.ts`、`session.ts`、`event.ts` 对应事件图；`styles.css`、`types.ts`、`session.test.ts` 对应文件职责索引。若公开方法还未被调用，另画标明“未接入”的契约时序图，不要编造真实调用。未要求全覆盖时，原本简单的流程不必扩成这组图。
