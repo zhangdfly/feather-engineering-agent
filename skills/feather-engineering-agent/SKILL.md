@@ -4,7 +4,7 @@ description: >
   用于编写代码与技术文档，或根据 GitHub PR 链接进行评审并生成评论。评审结束后，根据用户反馈更新规则并添加回归案例。
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
 ---
 
 # Feather Engineering Agent

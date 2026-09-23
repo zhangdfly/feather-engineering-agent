@@ -111,3 +111,42 @@ class Executor:
 ```
 
 `Executor` 在执行真实业务动作的位置记录日志。只有日志策略需要透明应用到多个无关实现时，才考虑独立包装层。
+
+### 保留流水线失败
+
+错误：
+
+```powershell
+ssh source 'select-required-values' |
+  ssh target 'create-resource-from-stdin | apply-resource'
+
+if ($LASTEXITCODE -eq 0) {
+  Write-Output "发布成功"
+}
+```
+
+这里只检查最后一个远端命令。即使源端筛选失败，下游仍可能从空输入创建空资源并返回成功。
+
+正确：
+
+```powershell
+$payload = ssh source 'select-required-values'
+if ($LASTEXITCODE -ne 0) {
+  throw "读取源配置失败"
+}
+if (($payload | Measure-Object).Count -ne 2) {
+  throw "源配置缺少必要键"
+}
+
+$payload | ssh target 'create-resource-from-stdin | apply-resource'
+if ($LASTEXITCODE -ne 0) {
+  throw "应用目标资源失败"
+}
+
+$keyCount = ssh target 'count-resource-keys'
+if ($LASTEXITCODE -ne 0 -or $keyCount -ne 2) {
+  throw "目标资源状态不完整"
+}
+```
+
+敏感值只保留在内存和标准输入中；代码分别验证源步骤、交接形状和最终状态。若使用 POSIX shell 且每个阶段都会可靠返回非零，`set -o pipefail` 可以直接保留同步流水线的失败。
