@@ -106,6 +106,26 @@ sequenceDiagram
     Agent-->>User: 交付文档
 ```
 
+### 图内就地说明
+
+任务：领域模型图列出 `CourtTask`、`Memorial` 和 `AttentionItem`，读者还需要知道它们的中文名称和一句话职责。
+
+错误：图中只写三个英文对象名，紧接着再用表格逐项解释“Court 任务”“奏折”“待批事项”。读者理解任一关系时都要在图和表之间来回定位。
+
+正确：保留可追溯的对象标识，把短说明直接放进类标签：
+
+```mermaid
+classDiagram
+    class CourtTask["CourtTask<br/>Court 任务：目标与验收边界"]
+    class Memorial["Memorial<br/>奏折：不可改写的决策材料"]
+    class AttentionItem["AttentionItem<br/>待批事项：队列中的可操作镜像"]
+
+    CourtTask "0..1" <-- "*" AttentionItem
+    AttentionItem --> "1" Memorial
+```
+
+奏折 revision 规则、失败语义等较长不变量仍放在拥有该事实的正文中，不塞进类框；如果核心对象过多导致图无法扫读，按职责拆图。不要只留中文名称而丢失与代码或协议对应的英文标识。
+
 ### 多模块设计的覆盖与阅读路径
 
 任务：一个项目有客户端、服务端和共享协议。读者要求从 README 逐层看懂模块与主要类型，以及外部事件如何到达服务端；目前整体设计只有组件图，本地设计只有文件列表。
